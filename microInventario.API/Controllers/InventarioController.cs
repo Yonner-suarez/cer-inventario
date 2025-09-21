@@ -25,7 +25,15 @@ namespace microInventario.API.Controllers
             var claims = identity.Claims;
             var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role != "Administrador") return StatusCode(Variables.Response.BadRequest, "Solo los Administradores pueden crear productos");
+            if (role != "Administrador")
+            {
+                return StatusCode(Variables.Response.BadRequest, new GeneralResponse
+                {
+                    data = null,
+                    status = Variables.Response.BadRequest,
+                    message = "Solo los Administradores pueden crear productos"
+                });
+            }
             var idAdmin = int.Parse(claims.FirstOrDefault(c => c.Type == "idUser")?.Value);
 
 
@@ -51,7 +59,16 @@ namespace microInventario.API.Controllers
             var claims = identity.Claims;
             var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role != "Administrador") return StatusCode(Variables.Response.BadRequest, "Solo los Administradores pueden crear productos");
+            if (role != "Administrador")
+            {
+                return StatusCode(Variables.Response.BadRequest, new GeneralResponse
+                {
+                    data = null,
+                    status = Variables.Response.BadRequest,
+                    message = "Solo los Administradores pueden crear productos"
+                });
+            }
+
             var idAdmin = int.Parse(claims.FirstOrDefault(c => c.Type == "idUser")?.Value);
 
 
@@ -78,7 +95,16 @@ namespace microInventario.API.Controllers
             var claims = identity.Claims;
             var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role != "Administrador") return StatusCode(Variables.Response.BadRequest, "Solo los Administradores pueden crear productos");
+            if (role != "Administrador")
+            {
+                return StatusCode(Variables.Response.BadRequest, new GeneralResponse
+                {
+                    data = null,
+                    status = Variables.Response.BadRequest,
+                    message = "Solo los Administradores pueden crear productos"
+                });
+            }
+
             var idAdmin = int.Parse(claims.FirstOrDefault(c => c.Type == "idUser")?.Value);
 
 
@@ -104,7 +130,16 @@ namespace microInventario.API.Controllers
             var claims = identity.Claims;
             var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role != "Administrador") return StatusCode(Variables.Response.BadRequest, "Solo los Administradores pueden crear productos");
+            if (role != "Administrador")
+            {
+                return StatusCode(Variables.Response.BadRequest, new GeneralResponse
+                {
+                    data = null,
+                    status = Variables.Response.BadRequest,
+                    message = "Solo los Administradores pueden crear productos"
+                });
+            }
+
             var idAdmin = int.Parse(claims.FirstOrDefault(c => c.Type == "idUser")?.Value);
 
 
@@ -130,8 +165,17 @@ namespace microInventario.API.Controllers
             var claims = identity.Claims;
             var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role != "Administrador") return StatusCode(Variables.Response.BadRequest, "Solo los Administradores pueden consultar productos");
-            
+            if (role != "Administrador")
+            {
+                return StatusCode(Variables.Response.BadRequest, new GeneralResponse
+                {
+                    data = null,
+                    status = Variables.Response.BadRequest,
+                    message = "Solo los Administradores pueden consultar productos"
+                });
+            }
+
+
             GeneralResponse res = BLInventario.ObtenerProducto(idProducto);
             if (res.status == Variables.Response.OK)
             {
@@ -153,7 +197,16 @@ namespace microInventario.API.Controllers
             var claims = identity.Claims;
             var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role != "Administrador") return StatusCode(Variables.Response.BadRequest, "Solo los Administradores pueden consultar productos");
+            if (role != "Administrador")
+            {
+                return StatusCode(Variables.Response.BadRequest, new GeneralResponse
+                {
+                    data = null,
+                    status = Variables.Response.BadRequest,
+                    message = "Solo los Administradores pueden consultar productos"
+                });
+            }
+
 
             GeneralResponse res = BLInventario.ObtenerProductos();
             if (res.status == Variables.Response.OK)
