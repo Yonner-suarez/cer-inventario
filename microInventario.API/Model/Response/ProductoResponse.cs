@@ -2,6 +2,7 @@
 {
     public class ProductoResponse
     {
+        public int IdProducto { get; set; }
         public MarcaResponse Marca { get; set; }
         public CategoriaResponse Categoria { get; set; }
         public string Descripcion { get; set; }

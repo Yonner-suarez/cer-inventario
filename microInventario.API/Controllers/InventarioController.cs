@@ -197,13 +197,13 @@ namespace microInventario.API.Controllers
             var claims = identity.Claims;
             var role = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
-            if (role != "Administrador")
+            if (role == "Cliente")
             {
                 return StatusCode(Variables.Response.BadRequest, new GeneralResponse
                 {
                     data = null,
                     status = Variables.Response.BadRequest,
-                    message = "Solo los Administradores pueden consultar productos"
+                    message = "Solo los Administradores o Logistica pueden consultar productos"
                 });
             }
 

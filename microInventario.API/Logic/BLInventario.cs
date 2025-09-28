@@ -84,10 +84,9 @@ namespace microInventario.API.BL
             if (req.Cantidad != 0 && req.Cantidad != producto.Cantidad)
                 producto.Cantidad = req.Cantidad;
 
-            if (req.ImageBase64 != null && req.ImageBase64.Length > 0 &&
-                (producto.Image == null || !req.ImageBase64.SequenceEqual(producto.Image)))
+            if (req.Image != null && req.Image.Length > 0 )
             {
-                producto.Image = req.ImageBase64;
+                producto.Image = Convert.FromBase64String(req.Image);
             }
 
             // Llamar al método que actualiza el producto completo

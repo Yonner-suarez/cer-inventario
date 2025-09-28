@@ -265,8 +265,8 @@ namespace microInventario.API.Dao
                     cmd.Parameters.AddWithValue("@Descripcion", producto.Descripcion);
                     cmd.Parameters.AddWithValue("@Precio", producto.Precio);
                     cmd.Parameters.AddWithValue("@Cantidad", producto.Cantidad);
-                    cmd.Parameters.AddWithValue("@Marca", producto.Marca);
-                    cmd.Parameters.AddWithValue("@Categoria", producto.Categoria.IdCategoria != 0 ? producto.Categoria : (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Marca", producto.Marca.IdMarca != 0 ? producto.Marca.IdMarca : (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Categoria", producto.Categoria.IdCategoria != 0 ? producto.Categoria.IdCategoria : (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Imagen", producto.Image != null ? producto.Image : (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@IdAdmin", idAdmin);
                     cmd.Parameters.AddWithValue("@IdProducto", idProducto);
@@ -342,7 +342,8 @@ namespace microInventario.API.Dao
                                     Descripcion = reader["cer_text_descripcion"]?.ToString() ?? string.Empty,
                                     Precio = Convert.ToDecimal(reader["cer_decimal_precio"]),
                                     Cantidad = Convert.ToInt32(reader["cer_int_stock"]),
-                                    Image = reader["cer_blob_imagen"] != DBNull.Value ? (byte[])reader["cer_blob_imagen"] : null
+                                    Image = reader["cer_blob_imagen"] != DBNull.Value ? (byte[])reader["cer_blob_imagen"] : null,
+                                    IdProducto = Convert.ToInt32(reader["cer_int_id_producto"])
                                 };
 
                                 listaProductos.Add(producto);
