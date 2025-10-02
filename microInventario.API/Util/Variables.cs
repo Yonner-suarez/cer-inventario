@@ -13,10 +13,7 @@
             //Local
             public static string cnx = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings")["conexion"];
         }
-        public static class APICOMPRAS
-        {
-            public static string url = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("APICOMPRAS")["url"];
-        }
+        
         public static class Token
         {
             public static string PasswordHash = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("Token")["PasswordHash"];

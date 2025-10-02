@@ -341,3 +341,6 @@ ASALocalRun/
 healthchecksdb
 /microLeasing/appsettings.Development.json
 .vscode/launch.json
+
+# Ignorar solo el appsettings de microInventario.API
+/microInventario.API/appsettings.Development.json
