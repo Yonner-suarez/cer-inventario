@@ -1,26 +1,30 @@
-# Stage 1: build
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+# Etapa de build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiamos el csproj y restauramos dependencias (mejor cacheo)
-COPY ["microInventario.API/microInventario.API.csproj", "microInventario.API/"]
-RUN dotnet restore "microInventario.API/microInventario.API.csproj"
-
-# Copiamos el resto del proyecto y publicamos
+# Copiamos todos los csproj (para cachear restores correctamente)
 COPY . .
-WORKDIR /src/microInventario.API
-RUN dotnet publish "microInventario.API.csproj" -c Release -o /app/publish --no-restore
 
-# Stage 2: runtime
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+# Restauramos dependencias de todos los proyectos
+RUN find . -name "*.csproj" -print0 | xargs -0 -n1 dotnet restore
+
+# ARG para elegir el microservicio
+ARG PROJECT_PATH
+WORKDIR "/src/${PROJECT_PATH}"
+
+# Publicamos el proyecto seleccionado
+RUN dotnet publish -c Release -o /app/publish --no-restore
+
+# Etapa final (runtime)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-EXPOSE 80
+EXPOSE 8080
 
-# App listens on port 80
-ENV ASPNETCORE_URLS=http://+:80
-# Opcional: reduce logging para producción
-ENV DOTNET_ADDITIONAL_DEPS=
+# Render espera que la app escuche en 8080
+ENV ASPNETCORE_URLS=http://+:8080
 
 COPY --from=build /app/publish .
 
-ENTRYPOINT ["dotnet", "microInventario.API.dll"]
+# Entrypoint dinámico según el proyecto
+ARG PROJECT_DLL
+ENTRYPOINT ["dotnet", "${PROJECT_DLL}"]
