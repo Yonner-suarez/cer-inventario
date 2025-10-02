@@ -343,4 +343,5 @@ healthchecksdb
 .vscode/launch.json
 
 # Ignorar solo el appsettings de microInventario.API
-**/appsettings.Development.json
+/microInventario.API/appsettings.Development.json
+
