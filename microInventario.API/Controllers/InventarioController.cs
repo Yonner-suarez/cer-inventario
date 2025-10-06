@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace microInventario.API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class InventarioController: ControllerBase
