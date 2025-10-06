@@ -6,7 +6,6 @@
         /// Se asigna en el startup
         /// </summary>
         public static string env = "appsettings.json";
-        public static int ambiente = int.Parse(new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings")["ambiente"]);
 
         public static class Conexion
         {
