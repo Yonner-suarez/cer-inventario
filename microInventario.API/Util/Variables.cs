@@ -12,16 +12,33 @@
             //Local
             public static string cnx = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings")["conexion"];
         }
-        
+
         public static class Token
         {
-            public static string PasswordHash = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("Token")["PasswordHash"];
-            public static string SaltKey = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("Token")["SaltKey"];
-            public static string VIKey = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("Token")["VIKey"];
-            public static string Bearer = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("Token")["Bearer"];
-            public static string Llave = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("Token")["Llave"];
-            public static int Expiration = int.Parse(new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("Token")["Expiration"]);
+            private static IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile(env)
+                .Build();
+
+            public static string PasswordHash = Environment.GetEnvironmentVariable("TOKEN_PASSWORD_HASH")
+                ?? config.GetSection("AppSettings").GetSection("Token")["PasswordHash"];
+
+            public static string SaltKey = Environment.GetEnvironmentVariable("TOKEN_SALT_KEY")
+                ?? config.GetSection("AppSettings").GetSection("Token")["SaltKey"];
+
+            public static string VIKey = Environment.GetEnvironmentVariable("TOKEN_VI_KEY")
+                ?? config.GetSection("AppSettings").GetSection("Token")["VIKey"];
+
+            public static string Bearer = Environment.GetEnvironmentVariable("TOKEN_BEARER")
+                ?? config.GetSection("AppSettings").GetSection("Token")["Bearer"];
+
+            public static string Llave = Environment.GetEnvironmentVariable("TOKEN_KEY")
+                ?? config.GetSection("AppSettings").GetSection("Token")["Llave"];
+
+            public static int Expiration = int.TryParse(Environment.GetEnvironmentVariable("TOKEN_EXPIRATION"), out int exp)
+                ? exp
+                : int.Parse(config.GetSection("AppSettings").GetSection("Token")["Expiration"]);
         }
+
         public static class TipoPersona
         {
             public static string Natural = new ConfigurationBuilder().AddJsonFile(env).Build().GetSection("AppSettings").GetSection("TipoPersona")["Natural"];
