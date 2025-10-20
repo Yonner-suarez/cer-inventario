@@ -93,6 +93,10 @@ namespace microInventario.API.BL
             var res = DAInventaro.ActualizarProducto(idProducto, producto, idAdmin);
             return res;
         }
-
+        public static GeneralResponse ActualizarStockCuandoPagoConfirmnado(List<ActualizarStockProducto> request)
+        {
+            var res = DAInventaro.ActualizarStockCuandoPagoConfirmado(request);
+            return res;
+        }
     }
 }

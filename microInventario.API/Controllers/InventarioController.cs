@@ -218,5 +218,22 @@ namespace microInventario.API.Controllers
                 return StatusCode(res.status, res);
             }
         }
+
+        //porque se ejecuta cuando wompi dispara evento de pago success
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("[action]")]
+        public ActionResult ActualizarStock([FromBody] List<ActualizarStockProducto> request)
+        {
+            GeneralResponse res = BLInventario.ActualizarStockCuandoPagoConfirmnado(request);
+            if (res.status == Variables.Response.OK)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return StatusCode(res.status, res);
+            }
+        }
     }
 }

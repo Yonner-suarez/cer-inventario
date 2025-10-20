@@ -369,6 +369,61 @@ namespace microInventario.API.Dao
 
             return response;
         }
+        public static GeneralResponse ActualizarStockCuandoPagoConfirmado(List<ActualizarStockProducto> request)
+        {
+            var response = new GeneralResponse();
+
+            using (MySqlConnection conn = new MySqlConnection(Variables.Conexion.cnx))
+            {
+                try
+                {
+                    conn.Open();
+
+                    int totalActualizados = 0;
+
+                    foreach (var item in request)
+                    {
+                        string sqlUpdate = @"
+                                UPDATE tbl_cer_producto
+                                SET cer_int_stock = cer_int_stock - @Cantidad,
+                                    cer_int_updated_by = -1,
+                                    cer_datetime_updated_at = NOW()
+                                WHERE cer_int_id_producto = @IdProducto;
+                            ";
+
+                        using (var cmd = new MySqlCommand(sqlUpdate, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Cantidad", item.Cantidad);
+                            cmd.Parameters.AddWithValue("@IdProducto", item.IdProducto);
+
+                            int filasAfectadas = cmd.ExecuteNonQuery();
+                            totalActualizados += filasAfectadas;
+                        }
+                    }
+
+                    if (totalActualizados > 0)
+                    {
+                        response.status = Variables.Response.OK;
+                        response.message = "Stock actualizado correctamente.";
+                        response.data = totalActualizados;
+                    }
+                    else
+                    {
+                        response.status = Variables.Response.BadRequest;
+                        response.message = "No se actualizaron productos. Verifica los IDs proporcionados.";
+                        response.data = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response.status = Variables.Response.ERROR;
+                    response.message = "Error al actualizar stock: " + ex.Message;
+                    response.data = null;
+                }
+            }
+
+            return response;
+        }
 
 
     }

@@ -47,6 +47,7 @@ try
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddFluentValidationClientsideAdapters();
     builder.Services.AddValidatorsFromAssembly(typeof(AgregarProductoValidator).Assembly);
+    builder.Services.AddValidatorsFromAssembly(typeof(ActualizarStockProductoValidator).Assembly);
 
     // Controladores + Filtros
     builder.Services.AddControllers(options =>
