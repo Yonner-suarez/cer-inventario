@@ -386,7 +386,6 @@ namespace microInventario.API.Dao
                         string sqlUpdate = @"
                                 UPDATE tbl_cer_producto
                                 SET cer_int_stock = cer_int_stock - @Cantidad,
-                                    cer_int_updated_by = -1,
                                     cer_datetime_updated_at = NOW()
                                 WHERE cer_int_id_producto = @IdProducto;
                             ";
