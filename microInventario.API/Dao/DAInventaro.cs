@@ -29,7 +29,8 @@ namespace microInventario.API.Dao
                                             p.cer_varchar_nombre,
                                             p.cer_blob_imagen,
                                             p.cer_decimal_precio,
-                                            p.cer_int_stock
+                                            p.cer_int_stock,
+                                            p.cer_decimal_peso
                                         FROM tbl_cer_producto p
                                         INNER JOIN tbl_cer_marca m ON p.cer_int_id_marca = m.cer_int_id_marca
                                         INNER JOIN tbl_cer_categoria c ON p.cer_int_id_categoria = c.cer_int_id_categoria
@@ -60,7 +61,8 @@ namespace microInventario.API.Dao
                                     Nombre = reader["cer_varchar_nombre"]?.ToString() ?? string.Empty,
                                     Image = reader["cer_blob_imagen"] != DBNull.Value ? (byte[])reader["cer_blob_imagen"] : null,
                                     Precio = Convert.ToDecimal(reader["cer_decimal_precio"]),
-                                    Cantidad = Convert.ToInt32(reader["cer_int_stock"])
+                                    Cantidad = Convert.ToInt32(reader["cer_int_stock"]),
+                                    Peso = Convert.ToInt32(reader["cer_decimal_peso"])
                                 };
                             }
                         }
@@ -93,9 +95,9 @@ namespace microInventario.API.Dao
                     string sqlInsert = @"
                         INSERT INTO tbl_cer_producto
                         (cer_varchar_nombre, cer_text_descripcion, cer_decimal_precio, cer_int_stock, 
-                         cer_int_id_marca, cer_int_id_categoria, cer_datetime_created_at, cer_int_created_by, cer_blob_imagen)
+                         cer_int_id_marca, cer_int_id_categoria, cer_decimal_peso, cer_datetime_created_at, cer_int_created_by, cer_blob_imagen)
                         VALUES
-                        (@Nombre, @Descripcion, @Precio, @Cantidad, @IdMarca, @IdCategoria, NOW(), @IdAdmin, @Imagen);
+                        (@Nombre, @Descripcion, @Precio, @Cantidad, @IdMarca, @IdCategoria, @Peso, NOW(), @IdAdmin, @Imagen);
                         SELECT LAST_INSERT_ID();";
 
                     var cmd = new MySqlCommand(sqlInsert, conn);
@@ -105,6 +107,7 @@ namespace microInventario.API.Dao
                     cmd.Parameters.AddWithValue("@Precio", request.Precio);
                     cmd.Parameters.AddWithValue("@Cantidad", request.Cantidad);
                     cmd.Parameters.AddWithValue("@IdMarca", request.IdMarca);
+                    cmd.Parameters.AddWithValue("@Peso", request.Peso);
                     cmd.Parameters.AddWithValue("@IdCategoria", request.IdCategoria != 0 ? request.IdCategoria : (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@IdAdmin", IdAdmin);
                     cmd.Parameters.AddWithValue("@Imagen", request.ImageBase64 != null ? request.ImageBase64 : (object)DBNull.Value);
@@ -253,6 +256,7 @@ namespace microInventario.API.Dao
                             cer_int_stock = @Cantidad,
                             cer_int_id_marca = @Marca,
                             cer_int_id_categoria = @Categoria,
+                            cer_decimal_peso = @Peso,
                             cer_blob_imagen = @Imagen,
                             cer_int_updated_by = @IdAdmin,
                             cer_datetime_updated_at = NOW()
@@ -267,6 +271,7 @@ namespace microInventario.API.Dao
                     cmd.Parameters.AddWithValue("@Cantidad", producto.Cantidad);
                     cmd.Parameters.AddWithValue("@Marca", producto.Marca.IdMarca != 0 ? producto.Marca.IdMarca : (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@Categoria", producto.Categoria.IdCategoria != 0 ? producto.Categoria.IdCategoria : (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Peso", producto.Peso);
                     cmd.Parameters.AddWithValue("@Imagen", producto.Image != null ? producto.Image : (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@IdAdmin", idAdmin);
                     cmd.Parameters.AddWithValue("@IdProducto", idProducto);
@@ -313,6 +318,7 @@ namespace microInventario.API.Dao
                                             p.cer_text_descripcion,
                                             p.cer_decimal_precio,
                                             p.cer_int_stock,
+                                            p.cer_decimal_peso,
                                             p.cer_blob_imagen
                                         FROM tbl_cer_producto p
                                         INNER JOIN tbl_cer_marca m ON p.cer_int_id_marca = m.cer_int_id_marca
@@ -343,7 +349,8 @@ namespace microInventario.API.Dao
                                     Precio = Convert.ToDecimal(reader["cer_decimal_precio"]),
                                     Cantidad = Convert.ToInt32(reader["cer_int_stock"]),
                                     Image = reader["cer_blob_imagen"] != DBNull.Value ? (byte[])reader["cer_blob_imagen"] : null,
-                                    IdProducto = Convert.ToInt32(reader["cer_int_id_producto"])
+                                    IdProducto = Convert.ToInt32(reader["cer_int_id_producto"]),
+                                    Peso = Convert.ToInt32(reader["cer_decimal_peso"])
                                 };
 
                                 listaProductos.Add(producto);

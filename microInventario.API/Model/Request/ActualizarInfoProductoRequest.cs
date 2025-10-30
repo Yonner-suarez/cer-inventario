@@ -10,5 +10,6 @@
         public byte[] ImageBase64 { get; set; } = new byte[0];
         public decimal Precio { get; set; } = decimal.Zero;
         public int Cantidad { get; set; } = 0;
+        public int Peso { get; set; } = 0;
     }
 }

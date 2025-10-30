@@ -83,6 +83,8 @@ namespace microInventario.API.BL
 
             if (req.Cantidad != 0 && req.Cantidad != producto.Cantidad)
                 producto.Cantidad = req.Cantidad;
+            if (req.Peso != 0 && req.Peso != producto.Peso)
+                producto.Peso = req.Peso;
 
             if (req.Image != null && req.Image.Length > 0 )
             {

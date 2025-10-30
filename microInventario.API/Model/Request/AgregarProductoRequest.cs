@@ -9,6 +9,7 @@
         public string Image { get; set; }
         public decimal Precio { get; set; }
         public int Cantidad { get; set; }
+        public int Peso { get; set; }
         public byte[] ImageBase64 { get; set; } = new byte[] { };
     }
 }
